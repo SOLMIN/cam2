@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Access " />
+      <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+      <title>camera</title>
+      <link rel="stylesheet" href="css/bootstrap.min.css" />
+      <link rel="stylesheet" href="css/font-awesome.min.css" />
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+      <link rel="stylesheet" href="css/jquery-ui.min.css" />
+      <link rel="stylesheet" href="css/main.css" />
+      <link rel="stylesheet" href="css/idamglobal.css"/>
+      <link rel="stylesheet" href="css/suppliers.css" />
+      <script type="text/javascript" src="js/idam.js"></script>
+      <script type="text/javascript" src="js/langSupport.js"></script>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="js/country.js"></script>
+      <script type="text/javascript" src="js/home.js"></script>
+      <script>
+         $(function() 
+         {
+         	startup();
+         	makeTable();
+         	$("select#country,select#state,select#status,select#type,select#actions").change(function () 
+         	{
+         		if($(this).val() == "" || $(this).val() == "-1") 
+         			$(this).addClass("empty");
+         		else 
+         			$(this).removeClass("empty")
+         	});
+         	$("select#country,select#state,select#status,select#type,select#actions").change();
+         	$("#adv-search-form").change(function()
+         	{
+         		var validate= false;
+         		if(($("select#country").val() != "-1") || ($("select#state").val() != 0) ||
+         			($("select#status").val() != 0) || ($("select#type").val() != "") || 
+         			($("select#actions").val() != "") || ($("#zip").val() != "") || ($("#name").val() != ""))
+         				validate = true;
+         		if(validate == true)
+         			$("#reset-btn").addClass("blue");
+         		else
+         			$("#reset-btn").removeClass("blue");
+         	});
+         	$(".clickable-row").click(function() 
+         	{
+         		window.document.location = $(this).data("href");
+         	});
+         	 $('[data-toggle="tooltip"]').hover(function(){
+         		$('.tooltip-inner').css('min-width', '400px');
+         		$('.tooltip-inner').css('color', 'white');
+         	});
+         });
+      </script>
+      <style>
+         canvas.drawing,
+         canvas.drawingBuffer {
+         position: absolute;
+         left: 0;
+         top: 0;
+         }
+         h1 {
+         color: blue;
+         border: 10px border-style blue;
+         }
+         p {
+         display: block;
+         }
+      </style>
+   </head>
+   <body class="container-fluid">
+      <nav class="navbar navbar-default navbar-fixed-top">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <div class="navbar-brand">
+                  <span style="float:left"><a onclick="openMenu()"><img src="images/01_Menu.png" alt="Metro"></a></span>
+                  <span style="float:right"><img class="metro-banner" src="images/02_Logo.png" alt="Metro"></span>
+               </div>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+               <ul class="nav navbar-nav navbar-right">
+                  <a onclick="showLangDropDown()" value="Language" class="header-gap">
+                  <img id="selected-lang" src="images/es-DE.png" class="flag-lang"/><img src="images/Drop-Down.png" /></a>
+                  <div class="lang-dropdown">
+                     <div id="myDropdown" class="dropdown-content">
+                        <a onclick="change_lang('de')" ><img src="images/de-DE.png" class="flag-lang">Deutsch-DE</a>
+                        <a onclick="change_lang('us')"><img src="images/en-US.png" class="flag-lang">English-US</a>
+                        <a onclick="change_lang('es')"><img src="images/es-DE.png" class="flag-lang">Español-DE</a>
+                     </div>
+                  </div>
+               </ul>
+            </div>
+         </div>
+      </nav>
+      <div class="supplier-navbar">
+         <span ><a href="home.html">Home</a></span>
+         <span class="active"><a href="suppliers.html">Order/GR Info</a></span>
+         <span><a href="order-article_search.html">Order/ Article Search</a></span>
+         <span><a href="report.html">Report</a></span>
+      </div>
+      <!--Body-->
+        
+  <!--
+	Ideally these elements aren't created until it's confirmed that the 
+	client supports video/camera, but for the sake of illustrating the 
+	elements involved, they are created with markup (not JavaScript)
+    -->
+    <video id="video" width="640" height="480" autoplay></video>
+        <button id="snap">Snap Photo</button>
+        <canvas id="canvas" width="640" height="480"></canvas>
+
+        <script>
+            // Grab elements, create settings, etc.
+            var video = document.getElementById('video');
+
+            // Get access to the camera!
+            if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Not adding `{ audio: true }` since we only want video now
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                    video.src = window.URL.createObjectURL(stream);
+                    video.play();
+                });
+            }
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var video = document.getElementById('video');
+
+            
+            document.getElementById("snap").addEventListener("click", function() {
+                context.drawImage(video, 0, 0, 640, 480);
+            });
+        </script>
+   
+
+
+
+
+
+      <div id="scanner-container">
+      
+        <input  type="button"  id="btn" value="Click to Start Scanning Your barcode " />
+        <p id="result" style="color:brown"></p>
+        <script src="quagga.js"></script>
+        <script>
+            var _scannerIsRunning = false;
+            var xyz = 0;
+            var trapp = "";
+            var max_val = 0;
+            var bar_code = 0;
+            var obj = {
+            
+            };
+            
+            function startScanner() {
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#scanner-container'),
+                        constraints: {
+                            width: 480,
+                            height: 320,
+                            facingMode: "environment"
+                        },
+                    },
+                    decoder: {
+                        readers: [
+                            "code_128_reader",
+                            "ean_reader",
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader"
+                        ],
+                        debug: {
+                            showCanvas: true,
+                            showPatches: true,
+                            showFoundPatches: true,
+                            showSkeleton: true,
+                            showLabels: true,
+                            showPatchLabels: true,
+                            showRemainingPatchLabels: true,
+                            boxFromPatches: {
+                                showTransformed: true,
+                                showTransformedBox: true,
+                                showBB: true
+                            }
+                        }
+                    },
+            
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+            
+                    console.log("Done with initialization . Ready to start");
+                    Quagga.start();
+            
+            
+                    // _scannerIsRunning = true;
+                });
+            
+                Quagga.onProcessed(function(result) {
+                    var drawingCtx = Quagga.canvas.ctx.overlay,
+                        drawingCanvas = Quagga.canvas.dom.overlay;
+            
+                    if (result) {
+                        if (result.boxes) {
+                            drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                            result.boxes.filter(function(box) {
+                                return box !== result.box;
+                            }).forEach(function(box) {
+                                Quagga.ImageDebug.drawPath(box, {
+                                    x: 0,
+                                    y: 1
+                                }, drawingCtx, {
+                                    color: "green",
+                                    lineWidth: 2
+                                });
+                            });
+                        }
+            
+                        if (result.box) {
+                            Quagga.ImageDebug.drawPath(result.box, {
+                                x: 0,
+                                y: 1
+                            }, drawingCtx, {
+                                color: "#00F",
+                                lineWidth: 2
+                            });
+                        }
+            
+                        if (result.codeResult && result.codeResult.code) {
+                            Quagga.ImageDebug.drawPath(result.line, {
+                                x: 'x',
+                                y: 'y'
+                            }, drawingCtx, {
+                                color: 'blue',
+                                lineWidth: 3
+                            });
+                        }
+                    }
+                });
+            
+                Quagga.onDetected(function(result) {
+                    //debugger;
+                    console.log("Your Barcode Result is  : " + result.codeResult.code)
+                    if (trapp != result.codeResult.code) {
+                        if (xyz == 0) {
+            
+            
+                            console.log("Your Barcode Result is  : " + result.codeResult.code)
+            
+                            if (result.codeResult.code in obj) {
+                                var check = result.codeResult.code;
+                                var val = obj[check];
+                                obj[result.codeResult.code] = val + 1;
+                                console.log("value" + obj);
+                            } else {
+                                obj[result.codeResult.code] = 1;
+                                console.log("opbject is : " + obj);
+                            }
+                            var r = "Your Barcode Result is  : " + result.codeResult.code;
+                            for (key in obj) {
+                                if (obj[key] > max_val) {
+                                    max_val = obj[key];
+                                    bar_code = key;
+                                }
+                            }
+            
+                            xyz = 1;
+                            trapp = result.codeResult.code;
+            
+                        } else {
+                            xyz = 1;
+            
+            
+                        }
+                    } else {
+                        xyz = 0;
+                        var getProperty = function(propertyName) {
+                            return obj[propertyName];
+                        };
+            
+                        var count = obj[trapp];
+                        console.log(" count value : " + count);
+                        obj[result.codeResult.code] = count + 1;
+                        console.log(obj);
+            
+                    }
+            
+                    var res1 = document.getElementById("result")
+                    var k = "  ";
+                    var rest = "Your Barcode Result is  : " + bar_code + k + "Max is:" + max_val;
+                    document.getElementById("result").innerHTML = rest;
+                });
+            
+            }
+            
+            // Start/stop scanner
+            document.getElementById("btn").addEventListener("click", function() {
+                    startScanner();
+            });
+            
+            
+        </script>
+      </div>
+      <!---Side Menu---->
+      <div id="dialog">
+         <div class="user">
+            <div class="row">
+               <div class="border col-lg-2 col-md-2 col-sm-4 col-xs-6">MENU</div>
+               <div class="border col-lg-8 col-md-8 col-sm-5 col-xs-2"></div>
+               <div class="border col-lg-1 col-md-1 col-sm-2 col-xs-3"><a onclick="close_dialog()"><img src="images/15_Side_Menu_Close.png" class="user-image"></a></div>
+            </div>
+            <div class="row profile">
+               <div class="border col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                  <img src="images/person.jpg" class="img-circle" alt="Username" width="45" height="50" />
+               </div>
+               <div class="border col-lg-8 col-md-8 col-sm-6 col-xs-5">
+                  <div class="name">Employee 755</div>
+                  <div class="designation">QA Specialist</div>
+               </div>
+               <div class="border col-lg-1 col-md-1 col-sm-1 col-xs-1"><a href="login.html"><img src="images/16_Logout.png" class="user-image"></a></div>
+            </div>
+         </div>
+         <div class="list">
+            <div class="list-box list-home">HOME</div>
+            <div class="list-box accordian-sm">
+               <span class="heading">Quality Assurance </span>
+               <span class="arrow arrow-down-sm"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+               <span class="arrow arrow-up-sm"><i class="fa fa-angle-up" aria-hidden="true"></i></span>
+            </div>
+            <div class="list-box sublist-sm-hide">Order/ GR Info</div>
+            <div class="list-box sublist-sm-hide"><a href="order-article_search.html">Order/ Article Search</div>
+            <div class="list-box sublist-sm-hide">Reports</div>
+            <div class="list-box">REPORT</div>
+            <div class="list-box">Planning</div>
+         </div>
+      </div>
+      <!--Footer-->
+      <footer id = "idam-footer" class="footer navbar-fixed-bottom">
+         <div class="container-fluid">
+            <span style="float: left;">
+            <span class="header-gap">Terms &amp; Conditions</span>
+            <span class="header-gap">Help</span>
+            <span class="header-gap">Privacy Policy</span>
+            <span class="header-gap">Cookies</span>
+            </span>
+            <span class="header-gap" style="float: right;"><i class="fa fa-copyright" aria-hidden="true"></i> &nbsp; 2016 Metro </span>
+         </div>
+      </footer>
+   </body>
+</html>
